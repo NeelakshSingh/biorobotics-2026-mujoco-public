@@ -4,7 +4,7 @@
 
 This exercise asks you to implement a biologically-inspired joint-angle controller for a one-degree-of-freedom musculoskeletal elbow model simulated in [MuJoCo](https://mujoco.org/). The model has two antagonistic muscles - a **flexor** and an **extensor** - and your goal is to drive the elbow to a target angle by computing appropriate muscle activations using the **antagonistic muscle ratio** framework described in:
 
-> Honda, Miyazaki & Nishikawa, *"Angle control of pneumatically-driven musculoskeletal model using antagonistic muscle ratio and antagonistic muscle activity"*, ROBIO 2010. (`ROBIO2010.pdf` is included in this repo.)
+> Y. Honda, F. Miyazaki, and A. Nishikawa, "Angle control of pneumatically-driven musculoskeletal model using antagonistic muscle ratio and antagonistic muscle activity," in *Proceedings of the IEEE International Conference on Robotics and Biomimetics (ROBIO)*, 2010. (`ROBIO2010.pdf` is included in this repo.)
 
 ---
 
