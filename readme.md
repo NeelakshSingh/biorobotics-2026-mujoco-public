@@ -1,4 +1,4 @@
-# Biorobotics 2026 — MuJoCo Elbow Control Exercise
+# Biorobotics 2026 - MuJoCo Elbow Control Exercise
 
 ## Overview
 
@@ -30,7 +30,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 The muscle/skeleton assets live in a git submodule (`myo_sim`). After cloning/downloading, fetch it:
 
 ```bash
-git init
 git submodule update --init --recursive
 ```
 
@@ -54,7 +53,7 @@ uv run python <script>.py
 python <script>.py
 ```
 
-### macOS — important: you must use `mjpython`
+### macOS - important: you must use `mjpython`
 
 Any script that opens a MuJoCo viewer window **must be launched with `mjpython`** on macOS, because the standard Python interpreter cannot host an OpenGL window on the main thread. `mjpython` is a thin wrapper installed alongside `mujoco` that handles this correctly.
 
@@ -66,9 +65,9 @@ mjpython <script>.py
 
 #### macOS dylib issue
 
-`uv`'s bundled Python does not ship with the shared library files (`.dylib`) that `mjpython` requires. You have two options — pick whichever is easier:
+`uv`'s bundled Python does not ship with the shared library files (`.dylib`) that `mjpython` requires. You have two options, pick whichever is easier:
 
-**Option A — install Python 3.10 via Homebrew to satisfy mjpython's dylib lookup**
+**Option A: install Python 3.10 via Homebrew to satisfy mjpython's dylib lookup**
 
 Sometimes, simply installing the matching brew Python is sometimes enough for `mjpython` to find the dylib at runtime:
 
@@ -76,7 +75,7 @@ Sometimes, simply installing the matching brew Python is sometimes enough for `m
 brew install python@3.10
 ```
 
-**Option B — install Python 3.10 via Homebrew and point uv at it**
+**Option B: install Python 3.10 via Homebrew and point uv at it**
 
 If the above doesn't work you can tell 'uv' to use the brew-installed Python 3.10, which includes the necessary dylibs:
 
@@ -96,14 +95,14 @@ uv run mjpython -c "import mujoco; print(mujoco.__version__)"
 
 #### No interactive matplotlib on macOS with mjpython
 
-`mjpython` occupies the main thread for the MuJoCo viewer, so **`plt.show()` will not work** — calling it will either hang or raise an error. Always save plots to a file instead:
+`mjpython` occupies the main thread for the MuJoCo viewer, so **`plt.show()` will not work**, calling it will either hang or raise an error. Always save plots to a file instead:
 
 ```python
 # Instead of plt.show():
 plt.savefig("results.png", dpi=150)
 ```
 
-The exercise files already do this. Use a non-interactive matplotlib backend at the top of your script:
+Use a non-interactive matplotlib backend at the top of your script:
 
 ```python
 import matplotlib
@@ -122,11 +121,11 @@ import matplotlib.pyplot as plt
 │   ├── custom_env.py         # ElbowAngleEnv definition
 │   └── xml/simple_arm/
 │       └── elbow.xml         # MuJoCo model (muscles, joints, geometry)
-├── myo_sim/                  # git submodule — MyoHub assets
+├── myo_sim/                  # git submodule - MyoHub assets
 ├── open_mjmodel_interactive.py   # interactive model explorer (see below)
 ├── run_model.py              # sanity-check: runs the env with random actions
-├── ratio_pid_challenge.py    # exercise — challenge version (barebones)
-├── ratio_pid_guided.py       # exercise — guided version (with TODOs)
+├── ratio_pid_challenge.py    # exercise - challenge version (barebones)
+├── ratio_pid_guided.py       # exercise - guided version (with TODOs, not released yet, ask if you want it)
 ├── ROBIO2010.pdf             # reference paper
 └── pyproject.toml
 ```
@@ -135,9 +134,9 @@ import matplotlib.pyplot as plt
 
 ## The exercise
 
-### The environment — `elbow_angle-v0`
+### The environment - `elbow_angle-v0`
 
-The environment wraps a one-DOF musculoskeletal elbow. At each episode a **target elbow angle** is drawn at random from the range **5° – 130°**.
+The environment wraps a one-DOF musculoskeletal elbow. At each episode a **target elbow angle** is drawn at random from the range **5° - 130°**.
 
 **Observation vector** (5 values):
 
@@ -156,7 +155,7 @@ The environment wraps a one-DOF musculoskeletal elbow. At each episode a **targe
 | 0 | Flexor | Increases joint angle (flexion) |
 | 1 | Extensor | Decreases joint angle (extension) |
 
-`env.action_space.low` / `.high` report `[-1, 1]`, but the underlying muscle activations are clipped to `[0, 1]` internally — negative values behave the same as zero. In practice, keep your actions in `[0, 1]`. Equal activations → neutral; higher flexor → joint flexes; higher extensor → joint extends.
+`env.action_space.low` / `.high` report `[-1, 1]`, but the underlying muscle activations are clipped to `[0, 1]` internally - negative values behave the same as zero. In practice, keep your actions in `[0, 1]`. Equal activations → neutral; higher flexor → joint flexes; higher extensor → joint extends.
 
 **Control timestep:**
 ```python
@@ -167,7 +166,7 @@ dt = env.unwrapped.sim.step_duration * env.unwrapped.frame_skip
 
 Two starter files are provided. Choose the one that matches your preferred level of challenge:
 
-#### `ratio_pid_challenge.py` — challenge version
+#### `ratio_pid_challenge.py` - challenge version
 
 Contains only the environment setup and a loop that steps with random actions. Everything else is for you to figure out. Explore the codebase, read the paper, and implement the full controller from scratch.
 
@@ -176,7 +175,7 @@ uv run mjpython ratio_pid_challenge.py   # macOS
 uv run python   ratio_pid_challenge.py   # Linux / Windows
 ```
 
-#### `ratio_pid_guided.py` — guided version (released on demand)
+#### `ratio_pid_guided.py` - guided version (released on demand)
 
 Contains the full environment setup, plotting code, and structured `TODO` comments that walk you through each part of the implementation in order. Fill in the blanks.
 
@@ -192,9 +191,9 @@ This can be a helpful resource to understand how to interact with the environmen
 
 Read **Section III** of `ROBIO2010.pdf` to understand the ratio PID controller for joint controlled via an antagonistic muscle pair. The core ideas are:
 
-1. **Antagonistic muscle ratio** `Ar` — maps a desired angle to a ratio that splits activation between the two muscles.
-2. **PID feedback** — compute a control signal `u` from the angle error, then derive `Ar` from `u`.
-3. **Individual activations** — as given in the paper (eqs. 3 & 4): `Pe = Ar · Ac` and `Pf = (1 − Ar) · Ac`, where `Pe` is the extensor and `Pf` is the flexor. `Ac` is the total activity (joint stiffness knob; you can keep it fixed at 1.0 to start). Think carefully about whether this mapping applies directly to this simulation, or something needs toe be different here.
+1. **Antagonistic muscle ratio** `Ar`: maps a desired angle to a ratio that splits activation between the two muscles.
+2. **PID feedback**: compute a control signal `u` from the angle error, then derive `Ar` from `u`.
+3. **Individual activations**: as given in the paper (eqs. 3 & 4): `Pe = Ar · Ac` and `Pf = (1 − Ar) · Ac`, where `Pe` is the extensor and `Pf` is the flexor. `Ac` is the total activity (joint stiffness knob; you can keep it fixed at 1.0 to start). Think carefully about whether this mapping applies directly to this simulation, or something needs toe be different here.
 
 ---
 
@@ -230,7 +229,7 @@ sim.resume()
 
 ## Exploring the Gymnasium environment interactively (optional)
 
-A great way to get comfortable with the Gymnasium API before writing your controller is to poke at the environment directly in an interactive Python session. You can do this in an **IPython shell** or a **JupyterLab notebook** — both are installed via `uv`.
+A great way to get comfortable with the Gymnasium API before writing your controller is to poke at the environment directly in an interactive Python session. You can do this in an **IPython shell** or a **JupyterLab notebook**, both are installed via `uv`.
 
 ```python
 import gymnasium as gym
@@ -249,14 +248,14 @@ print("After one step:   ", obs)
 env.close()
 ```
 
-Try things like `env.action_space.sample()`, inspect `env.unwrapped.sim`, or manually set actions and watch how the observation changes — it is a low-stakes way to build intuition before you implement the controller.
+Try things like `env.action_space.sample()`, inspect `env.unwrapped.sim`, or manually set actions and watch how the observation changes, it is a low-stakes way to build intuition before you implement the controller.
 
-**macOS users — IPython must be launched via `mjpython`; JupyterLab does not.**
+**macOS users - IPython must be launched via `mjpython`; JupyterLab does not.**
 
-Because macOS requires the MuJoCo viewer to run on the main thread, IPython must be started through `mjpython`. JupyterLab is a web server and does not need `mjpython` — use the standard launcher for it on all platforms:
+Because macOS requires the MuJoCo viewer to run on the main thread, IPython must be started through `mjpython`. JupyterLab is a web server and does not need `mjpython`, use the standard launcher for it on all platforms:
 
  ```bash
- # IPython shell (macOS — mjpython required for viewer access)
+ # IPython shell (macOS, mjpython required for viewer access)
  uv run mjpython IPython
 
  # JupyterLab (all platforms, including macOS)
