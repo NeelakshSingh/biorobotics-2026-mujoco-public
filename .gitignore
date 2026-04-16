@@ -1,0 +1,45 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS temp files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp files
+*.tmp
+*.temp
+bin/
+wandb/
+
+# Virtual environments
+.venv
+
+# Python cache files
+__pycache__
+
+# Build / distribution
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# Type checker / linter caches
+.mypy_cache/
+.ruff_cache/
+.pytype/
+
+# Test caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Miscellaneous
+.vscode
