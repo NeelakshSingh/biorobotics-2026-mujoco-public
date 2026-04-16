@@ -176,7 +176,7 @@ uv run mjpython ratio_pid_challenge.py   # macOS
 uv run python   ratio_pid_challenge.py   # Linux / Windows
 ```
 
-#### `ratio_pid_guided.py` — guided version
+#### `ratio_pid_guided.py` — guided version (released on demand)
 
 Contains the full environment setup, plotting code, and structured `TODO` comments that walk you through each part of the implementation in order. Fill in the blanks.
 
@@ -184,6 +184,9 @@ Contains the full environment setup, plotting code, and structured `TODO` commen
 uv run mjpython ratio_pid_guided.py   # macOS
 uv run python   ratio_pid_guided.py   # Linux / Windows
 ```
+
+If you face difficulties in implementing the controller due to unfamiliarity with the environment or the MuJoCo API, we recommend will share the guided version with you which includes most of the implementation details and step-by-step instructions, with only the controller logic and tuning left for you.
+This can be a helpful resource to understand how to interact with the environment and implement the controller correctly.
 
 ### What to implement
 
