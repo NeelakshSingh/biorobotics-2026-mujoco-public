@@ -27,7 +27,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ### 1. Clone and fetch submodules
 
-The muscle/skeleton assets live in a git submodule (`myo_sim`). After cloning/downloading, fetch it:
+The muscle/skeleton assets live in a git submodule (`myo_sim`). After cloning/downloading, if you did not fetch the submodule, you can get it using the following command:
 
 ```bash
 git submodule update --init --recursive
@@ -155,9 +155,10 @@ The environment wraps a one-DOF musculoskeletal elbow. At each episode a **targe
 | 0 | Flexor | Increases joint angle (flexion) |
 | 1 | Extensor | Decreases joint angle (extension) |
 
-`env.action_space.low` / `.high` report `[-1, 1]`, but the underlying muscle activations are clipped to `[0, 1]` internally - negative values behave the same as zero. In practice, keep your actions in `[0, 1]`. Equal activations → neutral; higher flexor → joint flexes; higher extensor → joint extends.
+Within the environment, the underlying muscle activations are clipped to `[0, 1]` internally - negative values behave the same as zero. In practice, keep your actions in `[0, 1]`.
 
 **Control timestep:**
+The control timestep is determined by MuJoCo's `step_duration` and MyoSim env's `frame_skip` parameters. You can compute it with:
 ```python
 dt = env.unwrapped.sim.step_duration * env.unwrapped.frame_skip
 ```
@@ -177,23 +178,19 @@ uv run python   ratio_pid_challenge.py   # Linux / Windows
 
 #### `ratio_pid_guided.py` - guided version (released on demand)
 
-Contains the full environment setup, plotting code, and structured `TODO` comments that walk you through each part of the implementation in order. Fill in the blanks.
+If you face difficulties in implementing the controller due to unfamiliarity with the environment or the MuJoCo API, we recommend will share the guided version with you which includes most of the implementation details and step-by-step instructions, with only the controller logic and tuning left for you.
+This can be a helpful resource to understand how to interact with the environment and implement the controller correctly.
+
+This version contains the full environment setup, plotting code, and structured `TODO` comments that walk you through each part of the implementation in order. Fill in the blanks.
 
 ```bash
 uv run mjpython ratio_pid_guided.py   # macOS
 uv run python   ratio_pid_guided.py   # Linux / Windows
 ```
 
-If you face difficulties in implementing the controller due to unfamiliarity with the environment or the MuJoCo API, we recommend will share the guided version with you which includes most of the implementation details and step-by-step instructions, with only the controller logic and tuning left for you.
-This can be a helpful resource to understand how to interact with the environment and implement the controller correctly.
-
 ### What to implement
 
-Read **Section III** of `ROBIO2010.pdf` to understand the ratio PID controller for joint controlled via an antagonistic muscle pair. The core ideas are:
-
-1. **Antagonistic muscle ratio** `Ar`: maps a desired angle to a ratio that splits activation between the two muscles.
-2. **PID feedback**: compute a control signal `u` from the angle error, then derive `Ar` from `u`.
-3. **Individual activations**: as given in the paper (eqs. 3 & 4): `Pe = Ar · Ac` and `Pf = (1 − Ar) · Ac`, where `Pe` is the extensor and `Pf` is the flexor. `Ac` is the total activity (joint stiffness knob; you can keep it fixed at 1.0 to start). Think carefully about whether this mapping applies directly to this simulation, or something needs toe be different here.
+Read `ROBIO2010.pdf` to understand the ratio PID controller for joint controlled via an antagonistic muscle pair.
 
 ---
 
@@ -293,10 +290,10 @@ Because macOS requires the MuJoCo viewer to run on the main thread, IPython must
 Code generation tools increase productivity enormously and their use is highly encouraged in day-to-day engineering and research. That said, we ask that you complete this exercise without AI assistance.
 
 Programming is a skill, and so is the ability to quickly understand and navigate a new API, both are essential for your future as an engineer or researcher. AI will generate a large fraction of the code written worldwide.
-This is already happening as these lines are written, and academia is no exception. 
+This is already happening as you read these lines, and academia is no exception. 
 But AI is not a substitute for genuine understanding. 
 The final research output: the model, the result, the paper, etc. will always need to be inspected, validated, and stood behind by the engineer or scientist putting it into the world. 
-That requires brain work that no tool can do for you ... at least for the time being.
+That requires brain work that no AI tool can do for you ... at least for the time being.
 
 To that end, we recommend working through this exercise on your own. 
 If you get stuck, please post a question on the course forum, the TAs will be happy to help you work through it.
