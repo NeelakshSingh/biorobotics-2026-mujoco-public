@@ -199,6 +199,7 @@ Read `ROBIO2010.pdf` to understand the ratio PID controller for joint controlled
 `open_mjmodel_interactive.py` opens the MuJoCo viewer and drops you into an IPython shell with the model loaded. This is useful for inspecting joint limits, actuator names, and experimenting with `data.ctrl` values in real time.
 You don't need to do this to complete the exercise, but it can be a helpful sandbox for understanding of MuJoCo's API.
 You won't directly interact with MuJoCo in the main exercise since all MuJoCo calls are handled within the Gymnasium environment, but this is a good opportunity to get familiar with how MuJoCo works under the hood.
+Note that in the MuJoCo viewer, you can use the panel on the right to manually adjust the muscle activations and see how the model responds in real time.
 
 ```bash
 uv run mjpython open_mjmodel_interactive.py 
@@ -282,6 +283,34 @@ Because macOS requires the MuJoCo viewer to run on the main thread, IPython must
 
 - The initial minimal MuJoCo environment was created by [Jhon Charaja](https://github.com/JhonPool4/mujoco-simple-arm-model.git). This repository is a forked and modified version of that work.
 - This README was drafted with the assistance of [Anthropic Claude](https://www.anthropic.com/claude).
+
+---
+
+## Simulation Task Submission: Tübingen Only
+
+After completing the simulation task, please make a submission on ILIAS in the **Submission: Simulation** folder.
+Make a submission under the correct category depending on whether you completed the Simulink version (**MATLAB Deliverables**) or the MuJoCo version (**MuJoCo Deliverables**) of the task.
+You may choose to submit either the Simulink version or the MuJoCo version, but not both.
+In case you make submissions into both categories or multiple submissions in either category, we will consider the latest submission among both categories for evaluation.
+The submission deadlines are indicated on ILIAS, and are the same for both categories.
+
+Please submit the following files for this task:
+
+- The python script containing your implementation of the MuJoCo version of the task, or the Simulink file containing your implementation of the Simulink version of the task.
+- Two figures containing two subplots each. The first subplot should show the actual and reference joint angles over time, and the second subplot should show the muscle activations over time. Name the plots: `control_episode_1.png` and `control_episode_2.png`.
+- A short video of around 30 seconds showing the controller in action on the simulated models for both the Simulink and the MuJoCo version. The video should correspond to one of the two episodes for which you are submitting the plots. Name the video: `control_episode_1_video.mp4` or `control_episode_2_video.mp4` depending on which episode you use for creating the video.
+
+**Important Note 1:** Please make sure that the python script can be executed without errors within the `uv` environment configured in the repository as you cloned it.
+Therefore, we are expecting that you won't change the `pyproject.toml` file since the task can be completed with the existing dependencies.
+The same applies to the Simulink version, make sure that given all the Simulink packages required for the task as defined, the `.slx` file should build and run without errors on a standard Matlab and Simulink installation.
+
+**Important Note 2:** At the end of the course, you will be required to submit an individual report alongside the group podcast.
+In this report, you will be asked to describe your implementation and experience of the simulation task too.
+Therefore, we recommend keeping your implementation backed up and well documented, so that you can easily refer to it when writing the report.
+
+**On the usage of the guided version for MuJoCo:** It does not matter in the end which version you use for your implementation, as long as you have implemented the controller logic and tuning yourself.
+The absence of the guided version at the beginning of this exercise is to incentivize you to explore the codebase and understand the environment and the API on your own, which is an important skill for any engineer or researcher in robotics.
+In any case, you can refer to the guided version to compare your implementation and to understand any part of the codebase that you find difficult.
 
 ---
 
